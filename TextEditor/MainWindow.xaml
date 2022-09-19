@@ -1,0 +1,126 @@
+﻿<Window x:Class="TextEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TextEditor"
+        mc:Ignorable="d"
+        Loaded="Window_Loaded" Closing="Window_Closing">
+    <Window.CommandBindings>
+        <CommandBinding Command="New" Executed="New_Executed"/>
+        <CommandBinding Command="Open" Executed="Open_Executed"/>
+        <CommandBinding Command="Save" Executed="Save_Executed"/>
+        <CommandBinding Command="SaveAs" Executed="SaveAs_Executed"/>
+        <CommandBinding Command="Print" Executed="Print_Executed"/>
+        <CommandBinding Command="{x:Static local:MainWindow.Exit}" Executed="Exit_Executed" />
+        <CommandBinding Command="Delete" Executed="Delete_Executed"/>
+        <CommandBinding Command="{x:Static local:MainWindow.GoTo}" Executed="GoTo_Executed"/>
+        <CommandBinding Command="{x:Static local:MainWindow.EditTime}" Executed="EditTime_Executed"/>
+        <CommandBinding Command="Find" Executed="Find_Executed"/>
+    </Window.CommandBindings>
+    
+    <Window.InputBindings>
+        <KeyBinding Command="SaveAs" Key="S" Modifiers="Ctrl+Alt"/>
+        <KeyBinding Command="{x:Static local:MainWindow.Exit}" Key="F4" Modifiers="Alt"/>
+        <KeyBinding Command="{x:Static local:MainWindow.GoTo}" Key="G" Modifiers="Ctrl"/>
+        <KeyBinding Command="{x:Static local:MainWindow.EditTime}" Key="F5"/>
+    </Window.InputBindings>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        
+        <Menu VerticalAlignment="Center" HorizontalAlignment="Left">
+            <MenuItem x:Name="mFile" Header="Файл">
+                <MenuItem x:Name="mFileNew" Header="Создать" Command="New"/>
+                <MenuItem x:Name="mFileOpen" Header="Открыть" Command="Open"/>
+                <MenuItem x:Name="mFileSave" Header="Сохранить" Command="Save"/>
+                <MenuItem x:Name="mFileSaveAs" Header="Сохранить как" Command="SaveAs" InputGestureText="Ctrl+Alt+S"/>
+                <MenuItem x:Name="mFilePageParams" Header="Параметры страницы" Click="mFilePageParams_Click"/>
+                <MenuItem x:Name="mFilePrint" Header="Печать" Command="Print"/>
+                <MenuItem x:Name="mFileExit" Header="Выход" Command="{x:Static local:MainWindow.Exit}" InputGestureText="Alt+F4"/>
+            </MenuItem>
+            
+            <MenuItem x:Name="mEdit" Header="Правка">
+                <MenuItem x:Name="mEditCancel" Header="Отменить" Command="Undo"/>
+                
+                <Separator/>
+                
+                <MenuItem x:Name="mEditCut" Header="Вырезать" Command="Cut"/>
+                <MenuItem x:Name="mEditCopy" Header="Копировать" Command="Copy"/>
+                <MenuItem x:Name="mEditPaste" Header="Вставить" Command="Paste"/>
+                <MenuItem x:Name="mEditDel" Header="Удалить" Command="Delete"/>
+                
+                <Separator/>
+
+                <MenuItem x:Name="mEditFind" Header="Найти и заменить" Command="Find"/>
+                <MenuItem x:Name="mEditGo" Header="Перейти" Command="{x:Static local:MainWindow.GoTo}" InputGestureText="Ctrl+G"/>
+                
+                <Separator/>
+                
+                <MenuItem x:Name="mEditGiveAll" Header="Выделить всё" Command="SelectAll"/>
+                <MenuItem x:Name="mEditTime" Header="Время и дата" Command="{x:Static local:MainWindow.EditTime}" InputGestureText="F5"/>
+            </MenuItem>
+            
+            <MenuItem x:Name="mFormat" Header="Формат">
+                <MenuItem x:Name="mFormatTransferText" Header="Перенос по словам" IsCheckable="True" Click="mFormatTransferText_Click"/>
+                <MenuItem x:Name="mFormatTextFont" Header="Шрифт" Click="mFormatTextFont_Click"/>
+            </MenuItem>
+            
+            <MenuItem x:Name="mView" Header="Вид">
+                <MenuItem x:Name="mViewStatusStrip" Header="Строка состояния" IsCheckable="True" Click="mViewStatusStrip_Click"/>
+            </MenuItem>
+            
+            <MenuItem x:Name="mHelp" Header="Справка" Click="mHelp_Click"/>
+        </Menu>
+        
+        <TextBox x:Name="notebox"
+                 Height="auto"
+                 Width="auto"
+                 AcceptsReturn="True"
+                 HorizontalScrollBarVisibility="Auto"
+                 VerticalScrollBarVisibility="Auto"
+                 Grid.Row="1"
+                 Grid.ColumnSpan="2"
+                 TextChanged="notebox_TextChanged"/>
+        
+        <StatusBar Name="statusBar" Grid.Row="2">
+            <StatusBarItem>
+                <TextBlock Text="Количество строк:"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock x:Name="statusLinesCount" Text="0"/>
+            </StatusBarItem>
+
+            <Separator/>
+
+            <StatusBarItem>
+                <TextBlock Text="Количество слов:"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock x:Name="statusWordsCount" Text="0"/>
+            </StatusBarItem>
+
+            <Separator/>
+
+            <StatusBarItem>
+                <TextBlock Text="Символов с пробелами:"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock x:Name="statusSpacesCount" Text="0"/>
+            </StatusBarItem>
+
+            <Separator/>
+
+            <StatusBarItem>
+                <TextBlock Text="Символов без пробелов:"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock x:Name="statusCharsCount" Text="0"/>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>
